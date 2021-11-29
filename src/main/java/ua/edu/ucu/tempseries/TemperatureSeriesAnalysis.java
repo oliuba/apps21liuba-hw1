@@ -1,6 +1,7 @@
 package ua.edu.ucu.tempseries;
 
 import java.util.Arrays;
+import java.util.InputMismatchException;
 
 public class TemperatureSeriesAnalysis {
     private double[] temperatureSeries;
@@ -10,20 +11,41 @@ public class TemperatureSeriesAnalysis {
     }
 
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
-        checkSeriesIsValid();
+        checkSeriesIsValid(temperatureSeries);
         this.temperatureSeries = Arrays.copyOf(temperatureSeries, temperatureSeries.length);
     }
 
-    public void checkSeriesIsValid() {
-        // exception check
+    public void checkSeriesIsValid(double[] temperatureSeries) {
+        for (double temp: temperatureSeries) {
+            if (temp < -273) {
+                throw new InputMismatchException();
+            }
+        }
+    }
+
+    public void checkEmptySeries() {
+        if (temperatureSeries.length == 0) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public double average() {
-        return -1;
+        checkEmptySeries();
+        double tempSum = 0;
+        for (double temp: temperatureSeries) {
+            tempSum += temp;
+        }
+        return tempSum / temperatureSeries.length;
     }
 
     public double deviation() {
-        return 0;
+        checkEmptySeries();
+        double quadraticSum = 0;
+        double mean = average();
+        for (double temp: temperatureSeries) {
+            quadraticSum += Math.pow(temp-mean, 2);
+        }
+        return Math.sqrt(quadraticSum / temperatureSeries.length);
     }
 
     public double min() {
@@ -39,12 +61,10 @@ public class TemperatureSeriesAnalysis {
     }
 
     public double findTempClosestToValue(double tempValue) {
-        if (temperatureSeries.length == 0) {
-            throw new IllegalArgumentException();
-        }
+        checkEmptySeries();
         double minDiff = Double.POSITIVE_INFINITY;
         double closestValue = temperatureSeries[0];
-        for (double temp : temperatureSeries) {
+        for (double temp: temperatureSeries) {
             if (Math.abs(temp - tempValue) < minDiff) {
                 closestValue = temp;
                 minDiff = Math.abs(closestValue - tempValue);
