@@ -19,12 +19,12 @@ final class TempSummaryStatistics {
 
     @Override
     public String toString() {
-        final int twoPointEstimator = 100;
+        final int pointEstimator = 100;
         return "TempSummaryStatistics{"
                 + "avgTemp="
                 + avgTemp
                 + ", devTemp="
-                + Math.round(devTemp * twoPointEstimator) / twoPointEstimator
+                + Math.round(devTemp * pointEstimator) / pointEstimator
                 + ", minTemp="
                 + minTemp
                 + ", maxTemp="
