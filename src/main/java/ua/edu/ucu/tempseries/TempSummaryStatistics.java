@@ -1,10 +1,10 @@
 package ua.edu.ucu.tempseries;
 
 final class TempSummaryStatistics {
-    final double avgTemp;
-    final double devTemp;
-    final double minTemp;
-    final double maxTemp;
+    private final double avgTemp;
+    private final double devTemp;
+    private final double minTemp;
+    private final double maxTemp;
 
     public TempSummaryStatistics(double avgTemp,
                                  double devTemp,
@@ -19,7 +19,7 @@ final class TempSummaryStatistics {
 
     @Override
     public String toString() {
-        int twoPointEstimator = 100;
+        final int twoPointEstimator = 100;
         return "TempSummaryStatistics{"
                 + "avgTemp="
                 + avgTemp

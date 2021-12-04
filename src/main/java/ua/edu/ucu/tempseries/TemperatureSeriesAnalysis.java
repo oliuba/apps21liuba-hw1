@@ -56,13 +56,14 @@ public class TemperatureSeriesAnalysis {
         double quadraticSum = 0;
         double mean = average();
         for (int i = 0; i < numTemps; i++) {
-            quadraticSum += (temperatureSeries[i]-mean) * (temperatureSeries[i]-mean);
+            quadraticSum += (temperatureSeries[i]-mean)
+                    * (temperatureSeries[i]-mean);
         }
         return Math.sqrt(quadraticSum / numTemps);
     }
 
     public double min() {
-        return findTempClosestToValue(-273);
+        return findTempClosestToValue(lowestTemp);
     }
 
     public double max() {
@@ -89,8 +90,8 @@ public class TemperatureSeriesAnalysis {
                 closestValue = temperatureSeries[i];
                 minDiff = Math.abs(closestValue - tempValue);
             }
-            if (temperatureSeries[i] > 0 &&
-                    Math.abs(temperatureSeries[i] - tempValue) == minDiff) {
+            if (temperatureSeries[i] > 0
+                    && Math.abs(temperatureSeries[i] - tempValue) == minDiff) {
                 closestValue = temperatureSeries[i];
                 minDiff = Math.abs(closestValue - tempValue);
             }
@@ -102,16 +103,16 @@ public class TemperatureSeriesAnalysis {
     public double[] findTempsCondition(double tempValue, boolean less) {
         int size = 0;
         for (int i = 0; i < numTemps; i++) {
-            if ((temperatureSeries[i] < tempValue && less) ||
-                    (temperatureSeries[i] >= tempValue && !less)) {
+            if ((temperatureSeries[i] < tempValue && less)
+                    || (temperatureSeries[i] >= tempValue && !less)) {
                 size++;
             }
         }
         double[] tempsCondition = new double[size];
         int counter = 0;
         for (int i = 0; i < numTemps; i++) {
-            if ((temperatureSeries[i] < tempValue && less) ||
-                    (temperatureSeries[i] >= tempValue && !less)) {
+            if ((temperatureSeries[i] < tempValue && less)
+                    || (temperatureSeries[i] >= tempValue && !less)) {
                 tempsCondition[counter] = temperatureSeries[i];
                 counter++;
             }
@@ -144,8 +145,8 @@ public class TemperatureSeriesAnalysis {
                 this.temperatureSeries = Arrays.copyOf(temperatureSeries,
                         2 * temperatureSeries.length);
             }
-            for (int i = 0; i < temps.length &&
-                    temperatureSeries.length > numTemps + i; i++) {
+            for (int i = 0; i < temps.length
+                    && temperatureSeries.length > numTemps + i; i++) {
                 temperatureSeries[numTemps + i] = temps[i];
                 newNumTemps++;
             }
