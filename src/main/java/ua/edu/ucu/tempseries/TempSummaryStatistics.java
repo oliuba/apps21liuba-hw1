@@ -12,4 +12,15 @@ final public class TempSummaryStatistics {
         this.maxTemp = minTemp;
         this.minTemp = maxTemp;
     }
+
+
+    @Override
+    public String toString() {
+        return "TempSummaryStatistics{" +
+                "avgTemp=" + avgTemp +
+                ", devTemp=" + Math.round(devTemp * 100.0) / 100.0 +
+                ", minTemp=" + minTemp +
+                ", maxTemp=" + maxTemp +
+                '}';
+    }
 }
