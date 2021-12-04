@@ -9,6 +9,7 @@ import java.util.InputMismatchException;
 public class TemperatureSeriesAnalysis {
     private double[] temperatureSeries;
     private int numTemps;
+    private final int lowestTemp = -273;
 
     public TemperatureSeriesAnalysis() {
         this.temperatureSeries = new double[]{};
@@ -17,13 +18,14 @@ public class TemperatureSeriesAnalysis {
 
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
         checkSeriesIsValid(temperatureSeries);
-        this.temperatureSeries = Arrays.copyOf(temperatureSeries, temperatureSeries.length);
+        this.temperatureSeries = Arrays.copyOf(temperatureSeries, +
+                temperatureSeries.length);
         this.numTemps = temperatureSeries.length;
     }
 
-    public void checkSeriesIsValid(double[] temperatureSeries) {
-        for (double temp: temperatureSeries) {
-            if (temp < -273) {
+    public void checkSeriesIsValid(double[] series) {
+        for (double temp: series) {
+            if (temp < lowestTemp) {
                 throw new InputMismatchException();
             }
         }
@@ -54,7 +56,7 @@ public class TemperatureSeriesAnalysis {
         double quadraticSum = 0;
         double mean = average();
         for (int i = 0; i < numTemps; i++) {
-            quadraticSum += Math.pow(temperatureSeries[i]-mean, 2);
+            quadraticSum += (temperatureSeries[i]-mean) * (temperatureSeries[i]-mean);
         }
         return Math.sqrt(quadraticSum / numTemps);
     }
@@ -82,12 +84,13 @@ public class TemperatureSeriesAnalysis {
         checkEmptySeries();
         double minDiff = Double.POSITIVE_INFINITY;
         double closestValue = temperatureSeries[0];
-        for (int i = 0; i< numTemps; i++) {
+        for (int i = 0; i < numTemps; i++) {
             if (Math.abs(temperatureSeries[i] - tempValue) < minDiff) {
                 closestValue = temperatureSeries[i];
                 minDiff = Math.abs(closestValue - tempValue);
             }
-            if (temperatureSeries[i] > 0 && Math.abs(temperatureSeries[i] - tempValue) == minDiff) {
+            if (temperatureSeries[i] > 0 &&
+                    Math.abs(temperatureSeries[i] - tempValue) == minDiff) {
                 closestValue = temperatureSeries[i];
                 minDiff = Math.abs(closestValue - tempValue);
             }
@@ -99,14 +102,16 @@ public class TemperatureSeriesAnalysis {
     public double[] findTempsCondition(double tempValue, boolean less) {
         int size = 0;
         for (int i = 0; i < numTemps; i++) {
-            if ((temperatureSeries[i] < tempValue && less) || (temperatureSeries[i] >= tempValue && !less)) {
+            if ((temperatureSeries[i] < tempValue && less) ||
+                    (temperatureSeries[i] >= tempValue && !less)) {
                 size++;
             }
         }
         double[] tempsCondition = new double[size];
         int counter = 0;
         for (int i = 0; i < numTemps; i++) {
-            if ((temperatureSeries[i] < tempValue && less) || (temperatureSeries[i] >= tempValue && !less)) {
+            if ((temperatureSeries[i] < tempValue && less) ||
+                    (temperatureSeries[i] >= tempValue && !less)) {
                 tempsCondition[counter] = temperatureSeries[i];
                 counter++;
             }
@@ -136,9 +141,11 @@ public class TemperatureSeriesAnalysis {
             newNumTemps += temps.length;
         } else {
             if (temps.length + numTemps > temperatureSeries.length) {
-                this.temperatureSeries = Arrays.copyOf(temperatureSeries, 2 * temperatureSeries.length);
+                this.temperatureSeries = Arrays.copyOf(temperatureSeries,
+                        2 * temperatureSeries.length);
             }
-            for (int i = 0; i < temps.length && temperatureSeries.length > numTemps + i; i++) {
+            for (int i = 0; i < temps.length &&
+                    temperatureSeries.length > numTemps + i; i++) {
                 temperatureSeries[numTemps + i] = temps[i];
                 newNumTemps++;
             }
